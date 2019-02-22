@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.4.5",
+    "casual": "^1.6.0",
+    "esm": "^3.2.5",
+    "graphql": "^14.1.1",
+    "lodash": "^4.17.11",
+    "nodemon": "^1.18.10",
+    "sequelize": "^4.42.0",
+    "sqlite": "^3.0.2"
+  }
+}
