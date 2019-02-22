@@ -44,7 +44,15 @@ class Auth {
     })
   }
 
+  setSession(authResult) {
+    this.idToken = authResult.idToken;
+    // set the time that the id token will expire at
+    this.expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+    localStorage.setItem(this.authFlag, JSON.stringify(true));
+  }
+
   logout() {
+    localStorage.setItem(this.authFlag, JSON.stringify(false));
     this.auth0.logout({
       returnTo: 'http://localhost:3000',
       clientID: config.AUTH0_CLIENT_ID,
@@ -52,29 +60,15 @@ class Auth {
   }
 
   isAuthenticated() {
+    // Check whether the current time is past the token's expiry time
+    //return new Date().getTime() < this.expiresAt;
     return JSON.parse(localStorage.getItem(this.authFlag));
-  }
-
-  setSession(authResult) {
-    this.idToken = authResult.idToken;
-    localStorage.setItem(this.authFlag, JSON.stringify(true));
-  }
-
-  signIn() {
-    this.auth0.authorize();
-  }
-
-  signOut() {
-    localStorage.setItem(this.authFlag, JSON.stringify(false));
-    this.auth0.logout({
-      returnTo: 'http://localhost:3000',
-      clientID: process.env.AUTH0_CLIENT_ID,
-    });
   }
 
   silentAuth() {
     if (this.isAuthenticated()) {
       return new Promise((resolve, reject) => {
+        // FIXME: 現状、auth0.checkSession() で err が帰ってきてしまう。session (cookie) まわりがうまく動いてない模様。
         this.auth0.checkSession({}, (err, authResult) => {
           if (err) {
             localStorage.removeItem(this.authFlag);

@@ -11,13 +11,14 @@ const server = new ApolloServer({
   context: ({ req }) => {
     // simple auth check on every request
     const token = req.headers.authorization;
+    if (!token || token === 'undefined') {
+      return {};
+    }
     const user = new Promise((resolve, reject) => {
       jwt.verify(token, getSigningKey, jwksOptions, (err, decoded) => {
         if (err) {
-          console.log('[jwt]', '[verify]', '[error]', err)
           return reject(err);
         }
-        console.log('[jwt]', '[verify]', '[success]', decoded)
         resolve(decoded.email);
       });
     });
