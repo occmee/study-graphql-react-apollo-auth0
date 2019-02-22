@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+// A library to retrieve RSA signing keys from a JWKS (JSON Web Key Set) endpoint.
 const jwksClient = require('jwks-rsa');
 
 const client = jwksClient({
@@ -13,10 +14,8 @@ export function getSigningKey(header, cb) {
   });
 }
 
-export const jwksOptions = {
+export const jwtOptions = {
   audience: `${process.env.AUTH0_CLIENT_ID}`,
   issuer: `https://${process.env.AUTH0_DOMAIN}/`,
   algorithms: ['RS256']
 };
-
-console.log(jwksOptions)

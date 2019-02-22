@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolver';
-import { getSigningKey, jwksOptions } from './auth';
+import { getSigningKey, jwtOptions } from './auth';
 
 const server = new ApolloServer({
   typeDefs,
@@ -15,7 +15,7 @@ const server = new ApolloServer({
       return {};
     }
     const user = new Promise((resolve, reject) => {
-      jwt.verify(token, getSigningKey, jwksOptions, (err, decoded) => {
+      jwt.verify(token, getSigningKey, jwtOptions, (err, decoded) => {
         if (err) {
           return reject(err);
         }
